@@ -12,7 +12,7 @@ export function ThemeToggle() {
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
-        setMounted(true); // evita mismatch no SSR
+        setMounted(true);
     }, []);
 
     if (!mounted) return null;
@@ -27,7 +27,7 @@ export function ThemeToggle() {
             {theme === 'dark' ? (
                 <Sun className="h-[1.2rem] w-[1.2rem] transition-all text-yellow-400"/>
             ) : (
-                <Moon className="h-[1.2rem] w-[1.2rem] transition-all text-zinc-900"/>
+                <Moon className="h-[1.2rem] w-[1.2rem] transition-all text-primary"/>
             )}
         </Button>
     );
