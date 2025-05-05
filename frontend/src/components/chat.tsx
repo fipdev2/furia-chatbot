@@ -13,10 +13,11 @@ export default function Chat() {
   const chatRef = useRef<HTMLDivElement | null>(null);
   const [isBotTyping, setIsBotTyping] = useState<boolean>(false);
   const [input, setInput] = useState<string>('');
+  const guestId = localStorage.getItem('guest_id');
 
-  const handleHistory = async (): Promise<void> => {
+  const handleHistory = async (guestId: string): Promise<void> => {
     try {
-      const data = await getHistory();
+      const data = await getHistory(guestId);
       setMessages(data);
     } catch (e) {
       console.error('Erro ao carregar histórico', e);
@@ -25,8 +26,11 @@ export default function Chat() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (!guestId) return;
+    if (!input) return;
+
     try {
-      await sendMessage(input);
+      await sendMessage(guestId, input);
       setInput('');
       setIsBotTyping(true);
     } catch (e) {
@@ -34,13 +38,20 @@ export default function Chat() {
     } finally {
       setTimeout(() => {
         setIsBotTyping(false);
-        handleHistory();
+        handleHistory(guestId);
       }, 1000);
     }
+
   };
 
   useEffect(() => {
-    handleHistory();
+    let guestId = localStorage.getItem('guest_id');
+    if (!guestId) {
+      guestId = crypto.randomUUID();
+      localStorage.setItem('guest_id', guestId);
+    }
+
+    handleHistory(guestId);
   }, []);
 
   useEffect(() => {
