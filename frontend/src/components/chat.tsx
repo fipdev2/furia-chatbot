@@ -56,14 +56,17 @@ export default function Chat() {
 
   useEffect(() => {
     if (chatRef.current) {
-      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+      chatRef.current.scrollTo({
+        top: chatRef.current.scrollHeight,
+        behavior: 'smooth',
+      });
     }
   }, [messages, isBotTyping]);
 
 
   return (
     <Card
-      className="w-[600px] bg-white dark:bg-gray-900 shadow-md rounded-lg px-2">
+      className="sm:w-[600px] bg-white dark:bg-gray-900 shadow-md rounded-lg px-2">
       <CardHeader>
         <CardTitle>
           Furia Chat
@@ -73,7 +76,7 @@ export default function Chat() {
           muito mais!
         </CardDescription>
       </CardHeader>
-      <CardContent className="overflow-y-auto h-[500px]" ref={chatRef}>
+      <CardContent className="overflow-y-auto h-[600px] sm:h-[500px]" ref={chatRef}>
         {
           messages.map((message: Message) => <ChatBubble key={message.id} isUser={message.isUser}
                                                          message={message.message} timestamp={message.timestamp}

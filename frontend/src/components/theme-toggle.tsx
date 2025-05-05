@@ -20,6 +20,7 @@ export function ThemeToggle() {
     return (
         <Button
             variant="outline"
+            className="hover:cursor-pointer"
             size="icon"
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
             aria-label="Alternar tema"
