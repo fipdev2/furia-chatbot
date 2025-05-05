@@ -18,7 +18,7 @@ export class MessagesService {
     return new MessageEntity(
       'Olá! 👋 Eu sou o Furia Bot.\n' +
         '\n' +
-        'Digite `/comandos` para ver tudo que posso responder. Bora trocar uma ideia sobre a FURIA! 🐆🔥',
+        'Digite **/comandos** para ver tudo que posso responder. Bora trocar uma ideia sobre a FURIA! 🐆🔥',
       new Date(),
       false,
       this.generateUUID(),
@@ -31,13 +31,13 @@ export class MessagesService {
     return new MessageEntity(
       'Comandos disponíveis:\n' +
         '\n' +
-        '/probganho – Probabilidade de ganhar o próximo jogo  \n' +
-        '/major – Quando é o próximo Major  \n' +
-        '/jogo – Quando é o próximo jogo da FURIA  \n' +
-        '/lineup – Qual o lineup atual da FURIA  \n' +
-        '/mapadestaque – Mapa onde a FURIA mais se destaca  \n' +
-        '/titulos – Quantos títulos a FURIA tem  \n' +
-        '/ultimotitulo – Qual foi o último título conquistado\n',
+        '**/probganho** – Probabilidade de ganhar o próximo jogo  \n' +
+        '**/major** – Quando é o próximo Major  \n' +
+        '**/jogo** – Quando é o próximo jogo da FURIA  \n' +
+        '**/lineup** – Qual o lineup atual da FURIA  \n' +
+        '**/mapadestaque** – Mapa onde a FURIA mais se destaca  \n' +
+        '**/titulos** – Quantos títulos a FURIA tem  \n' +
+        '**/ultimotitulo** – Qual foi o último título conquistado\n',
       new Date(),
       false,
       this.generateUUID(),
@@ -131,7 +131,7 @@ export class MessagesService {
 
   static defaultMessage(): MessageEntity {
     return new MessageEntity(
-      'Desculpe, não entendi. Digite `/comandos` para ver tudo que posso responder.',
+      'Desculpe, não entendi. Digite **/comandos** para ver tudo que posso responder.',
       new Date(),
       false,
       this.generateUUID(),
