@@ -13,7 +13,7 @@ export default function Chat() {
   const chatRef = useRef<HTMLDivElement | null>(null);
   const [isBotTyping, setIsBotTyping] = useState<boolean>(false);
   const [input, setInput] = useState<string>('');
-  const guestId = localStorage.getItem('guest_id');
+  const [guestId, setGuestId] = useState<string>('');
 
   const handleHistory = async (guestId: string): Promise<void> => {
     try {
@@ -26,8 +26,7 @@ export default function Chat() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!guestId) return;
-    if (!input) return;
+    if (!guestId || !input) return;
 
     try {
       await sendMessage(guestId, input);
@@ -41,17 +40,19 @@ export default function Chat() {
         handleHistory(guestId);
       }, 1000);
     }
-
   };
 
   useEffect(() => {
-    let guestId = localStorage.getItem('guest_id');
-    if (!guestId) {
-      guestId = crypto.randomUUID();
-      localStorage.setItem('guest_id', guestId);
+    // Garante que o código só rode no cliente
+    if (typeof window !== 'undefined') {
+      let id = localStorage.getItem('guest_id');
+      if (!id) {
+        id = crypto.randomUUID();
+        localStorage.setItem('guest_id', id);
+      }
+      setGuestId(id);
+      handleHistory(id);
     }
-
-    handleHistory(guestId);
   }, []);
 
   useEffect(() => {
@@ -63,40 +64,42 @@ export default function Chat() {
     }
   }, [messages, isBotTyping]);
 
-
   return (
-    <Card
-      className="sm:w-[600px] bg-white dark:bg-gray-900 shadow-md rounded-lg px-2">
+    <Card className="sm:w-[600px] bg-white dark:bg-gray-900 shadow-md rounded-lg px-2">
       <CardHeader>
-        <CardTitle>
-          Furia Chat
-        </CardTitle>
+        <CardTitle>Furia Chat</CardTitle>
         <CardDescription>
           Converse com Chatbot da Furia para obter informações sobre próximas partidas, resultados e
           muito mais!
         </CardDescription>
       </CardHeader>
       <CardContent className="overflow-y-auto h-[600px] sm:h-[500px]" ref={chatRef}>
-        {
-          messages.map((message: Message) => <ChatBubble key={message.id} isUser={message.isUser}
-                                                         message={message.message} timestamp={message.timestamp}
-                                                         id={message.id} />)
-        }
+        {messages.map((message: Message) => (
+          <ChatBubble
+            key={message.id}
+            isUser={message.isUser}
+            message={message.message}
+            timestamp={message.timestamp}
+            id={message.id}
+          />
+        ))}
         {isBotTyping && (
           <div className="flex justify-start mt-2">
-            <Avatar></Avatar>
-            <div
-              className="bg-muted text-muted-foreground px-4 py-2 rounded-2xl rounded-bl-none max-w-xs animate-pulse">
+            <Avatar />
+            <div className="bg-muted text-muted-foreground px-4 py-2 rounded-2xl rounded-bl-none max-w-xs animate-pulse">
               Furia Bot está digitando...
             </div>
           </div>
         )}
-
       </CardContent>
       <CardFooter>
-        <form className="flex items-center gap-2 w-full" onSubmit={(e) => handleSubmit(e)}>
-          <Input placeholder="Digite sua mensagem aqui..." className="w-full border border-border" value={input}
-                 onChange={e => setInput(e.target.value)} />
+        <form className="flex items-center gap-2 w-full" onSubmit={handleSubmit}>
+          <Input
+            placeholder="Digite sua mensagem aqui..."
+            className="w-full border border-border"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+          />
           <Button type="submit">Enviar</Button>
         </form>
       </CardFooter>
