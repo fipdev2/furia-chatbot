@@ -2,7 +2,7 @@ import axios, { AxiosInstance } from 'axios';
 import 'dotenv/config';
 
 const api: AxiosInstance = axios.create({
-  baseURL: process.env.API_URL ?? 'http://localhost:5000',
+  baseURL: process.env.API_URL ?? '//furia-chatbot-6to4.onrender.com',
 });
 
 console.log(`API URL: ${process.env.API_URL}`);
